@@ -1,0 +1,1522 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Conway's Game of Life
+\end_layout
+
+\begin_layout Author
+by Nikola Viazmenski
+\end_layout
+
+\begin_layout Date
+Due 11/10/2015
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Overview of the Game
+\end_layout
+
+\begin_layout Standard
+Conway's Game of Life was created in 1970 by British mathematician John
+ Horton Conway.
+ The Game is based around 
+\begin_inset Quotes eld
+\end_inset
+
+cells
+\begin_inset Quotes erd
+\end_inset
+
+, which are either in a state of life, or which are dead.
+ Which cells are alive and which are dead are determined by the basic rules
+ of the Game, which are described below.
+ By design, the Game is a zero-player game - all calculations are done by
+ the computer, with a user only giving the initial arrangement of the cells
+ - and in some cases, even this is not so, and the computer generates the
+ initial arrangement.
+ The rules of the Game are as follows:
+\end_layout
+
+\begin_layout Enumerate
+Any living cell with less than two neighbors will die, presumably due to
+ underpopulation.
+\end_layout
+
+\begin_layout Enumerate
+Any living cell with greater than three neighbors will die, presumably due
+ to overpopulation.
+\end_layout
+
+\begin_layout Enumerate
+Any living cell with two or three neighbors survives to the next generation.
+\end_layout
+
+\begin_layout Enumerate
+Any dead cell with precisely three neighbors will come to life.
+\end_layout
+
+\begin_layout Standard
+The Game and its derivatives are the most famous kinds of what are known
+ as 
+\begin_inset Quotes eld
+\end_inset
+
+cellular automatons
+\begin_inset Quotes erd
+\end_inset
+
+ - computerized simulations of life.
+\end_layout
+
+\begin_layout Section
+Code produced in class
+\end_layout
+
+\begin_layout Standard
+The following is code produced in the class, which simulates the Game of
+ Life.
+\end_layout
+
+\begin_layout Subsection
+Sections of the Code
+\end_layout
+
+\begin_layout Subsubsection
+Section 1
+\end_layout
+
+\begin_layout Standard
+Section 1 is rather simplistic.
+ It imports the libraries needed for the program, namely random, graphics,
+ and Tkinter, as well as the tkMessageBox module.
+ Random is used to generate the random locations of the cells which start
+ alive, graphics allows for the Game to be rendered and represented in a
+ window, and tkinter is relevant to the user input at the beginning of the
+ Game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import random 
+\end_layout
+
+\begin_layout Plain Layout
+
+from graphics import * 
+\end_layout
+
+\begin_layout Plain Layout
+
+from Tkinter import * 
+\end_layout
+
+\begin_layout Plain Layout
+
+import tkMessageBox
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Section 2
+\end_layout
+
+\begin_layout Standard
+Section 2 opens a window using Tkinter where the user can input the ratio
+ of living cells to total cells which they would like to create a game with.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+font = "times", 25, "bold" 
+\end_layout
+
+\begin_layout Plain Layout
+
+lTitle = Label(wMain, text = "Conway's Game of Life", font = font) 
+\end_layout
+
+\begin_layout Plain Layout
+
+lTitle.place(x = 120, y = 30)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+font2 = "times", 20 
+\end_layout
+
+\begin_layout Plain Layout
+
+lOption = Label(wMain, text = "Number of Starting Cells", font = font2)
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+lOption.place(x = 145, y = 80)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+font3 = "times", 15 
+\end_layout
+
+\begin_layout Plain Layout
+
+lOption2 = Label(wMain, text = "1/", font = font3) 
+\end_layout
+
+\begin_layout Plain Layout
+
+lOption2.place(x = 155, y = 110)
+\end_layout
+
+\begin_layout Plain Layout
+
+eEntry = Entry(wMain, bd = 2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+eEntry.place(x = 175, y = 110)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Section 3
+\end_layout
+
+\begin_layout Standard
+Section 3 generates the opening sequence in which the Game is played, with
+ the function 
+\begin_inset Quotes eld
+\end_inset
+
+gameCallBack
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The subfunction 
+\begin_inset Quotes eld
+\end_inset
+
+startUpCallBack
+\begin_inset Quotes erd
+\end_inset
+
+ randomly generates where the cells will be starting in a state of life,
+ based around the size of the game field and the ratio of cells that the
+ user selected to start as alive.
+ The following subfunction, 
+\begin_inset Quotes eld
+\end_inset
+
+firstLoadCallBack
+\begin_inset Quotes erd
+\end_inset
+
+, actually generates the numerical field upon which the game will be played.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+def gameCallBack(entry):
+\end_layout
+
+\begin_layout Plain Layout
+
+    p = []     
+\end_layout
+
+\begin_layout Plain Layout
+
+	alives = []     
+\end_layout
+
+\begin_layout Plain Layout
+
+	size = 35
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+	game = GraphWin("The Game Of Life", 400, 400)     
+\end_layout
+
+\begin_layout Plain Layout
+
+	game.setCoords(-.2, 0, size, size + .2)
+\end_layout
+
+\begin_layout Plain Layout
+
+         
+\end_layout
+
+\begin_layout Plain Layout
+
+	def startUpCallBack():
+\end_layout
+
+\begin_layout Plain Layout
+
+        live = 1.0/int(entry) * (size**2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        for i in range(int(live)):             
+\end_layout
+
+\begin_layout Plain Layout
+
+			x = int(random.uniform(0, size))             
+\end_layout
+
+\begin_layout Plain Layout
+
+			y = int(random.uniform(0, size))
+\end_layout
+
+\begin_layout Plain Layout
+
+            alives.append([x, y])
+\end_layout
+
+\begin_layout Plain Layout
+
+        return alives   
+\end_layout
+
+\begin_layout Plain Layout
+
+	def firstLoadCallBack():      
+\end_layout
+
+\begin_layout Plain Layout
+
+			startUpCallBack()
+\end_layout
+
+\begin_layout Plain Layout
+
+        	for i in range(size):             
+\end_layout
+
+\begin_layout Plain Layout
+
+				a = []             
+\end_layout
+
+\begin_layout Plain Layout
+
+				for r in range(size):                  
+\end_layout
+
+\begin_layout Plain Layout
+
+					a.append(0)             
+\end_layout
+
+\begin_layout Plain Layout
+
+				p.append(a)
+\end_layout
+
+\begin_layout Plain Layout
+
+			for i in range(size):             
+\end_layout
+
+\begin_layout Plain Layout
+
+				for r in range(size):                 
+\end_layout
+
+\begin_layout Plain Layout
+
+					for q in range(len(alives)):                     
+\end_layout
+
+\begin_layout Plain Layout
+
+						if alives[q][0] == r:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+								if alives[q][1] == i:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+									p[i][r] = 1         
+\end_layout
+
+\begin_layout Plain Layout
+
+		return p
+\end_layout
+
+\begin_layout Plain Layout
+
+	firstLoadCallBack()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Section 4
+\end_layout
+
+\begin_layout Standard
+Section 4 is the large function 
+\begin_inset Quotes eld
+\end_inset
+
+loaderCallBack
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This is where the game is rendered into a window from the graphics library,
+ the rules are defined, and the calculations based on the rules are processed,
+ the results of which are appended onto the new array which is then drawn
+ as the new state of the game.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python,breaklines=true"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+    def loaderCallBack(p):
+\end_layout
+
+\begin_layout Plain Layout
+
+        green = color_rgb(82, 245, 103)         
+\end_layout
+
+\begin_layout Plain Layout
+
+		red = color_rgb(247, 34, 49)         
+\end_layout
+
+\begin_layout Plain Layout
+
+		black = color_rgb(0, 0, 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        while True:
+\end_layout
+
+\begin_layout Plain Layout
+
+            for i in range(size):                 
+\end_layout
+
+\begin_layout Plain Layout
+
+				for r in range(size):                     
+\end_layout
+
+\begin_layout Plain Layout
+
+					point = Rectangle(Point(r, i), Point(r + 1, i + 1))               
+      
+\end_layout
+
+\begin_layout Plain Layout
+
+					if p[i][r] == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+							point.setFill(black)                     
+\end_layout
+
+\begin_layout Plain Layout
+
+					if p[i][r] == 1:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+							point.setFill(green)                     
+\end_layout
+
+\begin_layout Plain Layout
+
+					point.draw(game)
+\end_layout
+
+\begin_layout Plain Layout
+
+            x = []
+\end_layout
+
+\begin_layout Plain Layout
+
+			for i in range(size):                 
+\end_layout
+
+\begin_layout Plain Layout
+
+				g = []                 
+\end_layout
+
+\begin_layout Plain Layout
+
+				for r in range(size):                     
+\end_layout
+
+\begin_layout Plain Layout
+
+					g.append(p[i][r])                 
+\end_layout
+
+\begin_layout Plain Layout
+
+				x.append(g)                          
+\end_layout
+
+\begin_layout Plain Layout
+
+			for i in range(size):                 
+\end_layout
+
+\begin_layout Plain Layout
+
+				for r in range(size):                                          
+\end_layout
+
+\begin_layout Plain Layout
+
+				ss = 0
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if not i == (size - 1) and not i == 0:             
+            
+\end_layout
+
+\begin_layout Plain Layout
+
+						if not r == (size - 1) and not r == 0:
+\end_layout
+
+\begin_layout Plain Layout
+
+                            ss = ss + p[i + 1][r - 1]                  
+           
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i + 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i + 1][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r + 1]
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if i == (size - 1):                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if not r == (size - 1) and not r == 0:                           
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r + 1]                                       
+           
+\end_layout
+
+\begin_layout Plain Layout
+
+					if i == (size - 1):                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == (size - 1):                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][0]                                           
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+					if i == (size - 1):                                               
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == 0:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[0][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i - 1][r + 1]                     
+\end_layout
+
+\begin_layout Plain Layout
+
+					if i == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if not r == (size - 1) and not r == 0:                           
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r + 1]
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if i == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == (size - 1):                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][0]
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if i == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == 0:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[size - 1][r + 1]                                    
+              
+\end_layout
+
+\begin_layout Plain Layout
+
+					if not i == (size - 1) and not i == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == (size - 1):                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][0]
+\end_layout
+
+\begin_layout Plain Layout
+
+                    if not i == (size - 1) and not i == 0:             
+                                      
+\end_layout
+
+\begin_layout Plain Layout
+
+						if r == 0:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][size - 1]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r]                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							ss = ss + p[i][r + 1]
+\end_layout
+
+\begin_layout Plain Layout
+
+					if p[i][r] == 1:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if ss < 2:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							x[i][r] = 0                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if ss > 3:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							x[i][r] = 0                         
+\end_layout
+
+\begin_layout Plain Layout
+
+						if not ss > 3 and not ss < 2:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+							x[i][r] = 1                     
+\end_layout
+
+\begin_layout Plain Layout
+
+						if p[i][r] == 0:                         
+\end_layout
+
+\begin_layout Plain Layout
+
+							if ss == 3:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+								x[i][r] = 1                         
+\end_layout
+
+\begin_layout Plain Layout
+
+							if not ss == 3:                             
+\end_layout
+
+\begin_layout Plain Layout
+
+								x[i][r] == 0
+\end_layout
+
+\begin_layout Plain Layout
+
+                   
+\end_layout
+
+\begin_layout Plain Layout
+
+		p = []                          
+\end_layout
+
+\begin_layout Plain Layout
+
+		for i in range(size):                 
+\end_layout
+
+\begin_layout Plain Layout
+
+			g = []                 
+\end_layout
+
+\begin_layout Plain Layout
+
+			for r in range(size):                     
+\end_layout
+
+\begin_layout Plain Layout
+
+				g.append(x[i][r])                 
+\end_layout
+
+\begin_layout Plain Layout
+
+			p.append(g)
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                                       
+                
+\end_layout
+
+\begin_layout Plain Layout
+
+	loaderCallBack(p)
+\end_layout
+
+\begin_layout Plain Layout
+
+def startCallBack():     
+\end_layout
+
+\begin_layout Plain Layout
+
+	gameCallBack(int(eEntry.get())) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Section 5
+\end_layout
+
+\begin_layout Standard
+Section 5 of the code places the button which initializes the game on the
+ user input window, and sets some parameters for the game window.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bBegin = Button(wMain, text = "Begin", command = startCallBack) 
+\end_layout
+
+\begin_layout Plain Layout
+
+bBegin.place(x = 210, y = 150)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+wMain.minsize(width = 500, height = 210) 
+\end_layout
+
+\begin_layout Plain Layout
+
+wMain.maxsize(width = 500, height = 210) 
+\end_layout
+
+\begin_layout Plain Layout
+
+wMain.title("Conway's Game of Life") 
+\end_layout
+
+\begin_layout Plain Layout
+
+wMain.mainloop()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Patterns Observed in the Game
+\end_layout
+
+\begin_layout Subsection
+Stagnant patterns
+\end_layout
+
+\begin_layout Subsubsection
+Still Lifes
+\end_layout
+
+\begin_layout Standard
+Still life patterns are patterns that neither grow nor shrink, but rather,
+ when undisturbed, will simply stay static.
+\end_layout
+
+\begin_layout Standard
+Examples include the Block, the Beehive, the Loaf, and the Boat, pictured
+ below in respective order.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/66px-Game_of_life_block_with_border.svg.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/98px-Game_of_life_beehive.svg.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/98px-Game_of_life_loaf.svg.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/82px-Game_of_life_boat.svg.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Oscillators
+\end_layout
+
+\begin_layout Standard
+Oscillator patterns are patterns which switch back and forth between a set
+ of states.
+ The amount of different states that they have, or the amount of changes
+ between a first state and the oscillator undergoes before it returns to
+ its first state, is referred to as its period.
+\end_layout
+
+\begin_layout Standard
+Examples include the Blinker (which is very frequently observed in mass
+ quantities when a game is nearing complete stagnation), the Toad, and the
+ Pulsar.
+ Note that the oscillators can only be pictured in their base state due
+ to technical limitations, so they cannot be truly shown in full glory.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Blinker.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Toad.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Pulsar.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Translator patterns
+\end_layout
+
+\begin_layout Standard
+Translator patterns, known as 
+\begin_inset Quotes eld
+\end_inset
+
+spaceships
+\begin_inset Quotes erd
+\end_inset
+
+, are patterns that will consistently move themselves across the game field.
+ The speed at which they travel is compared to the speed of light - that
+ is, a spaceship traveling at the speed of light is traveling one cell per
+ turn.
+ Spaceships can be further classified into their direction of movement,
+ such as diagonal movement and orthogonal movement.
+ Two of the simplest and most well-known spaceships are the glider and the
+ lightweight spaceship, pictured below.
+ Again, due to technical limitations, they can only be displayed here in
+ one state.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Glider.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Lwss.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Spawner patterns
+\end_layout
+
+\begin_layout Standard
+Spawner patterns, referred to as 
+\begin_inset Quotes eld
+\end_inset
+
+guns
+\begin_inset Quotes erd
+\end_inset
+
+, are patterns that do not move around but infinitely produce smaller patterns,
+ specifically spaceships.
+ The first gun to be discovered was Gosper's glider gun, which was discovered
+ by Bill Gosper in 1970.
+ The significance of guns is that they can allow for fundamentally unlimited
+ growth.
+ The starting state of Gosper's glider gun is pictured below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Gosperglidergun.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Variations of the Game
+\end_layout
+
+\begin_layout Standard
+The Game's rules have been changed various times, in order to cultivate
+ new and interesting patterns using the same general architecture of the
+ living/dying rules, but changing the number of neighbors for which a cell
+ lives and dies.
+\end_layout
+
+\begin_layout Subsection
+Notation used in variations
+\end_layout
+
+\begin_layout Standard
+The rules of Conway's Game state that a cell is born if it has three neighbors,
+ dies if it has less than two or more than three neighbors, and lives if
+ it has two or three neighbors.
+ The rules for this game are then denoted as 23/3 - two or three neighbors
+ for a cell to live, three neighbors for a new cell to be born.
+\end_layout
+
+\begin_layout Subsection
+HighLife
+\end_layout
+
+\begin_layout Standard
+HighLife is a variation on Conway's Game of Life.
+ In HighLife, the rule is 23/36.
+ This means that a cell survives if it has two or three neighbors, and a
+ new cell is born if it has either three or six neighbors.
+ This variation on the game still allows a majority of common classic patterns
+ to exist, but also allows for easy creation of what is known as a 
+\begin_inset Quotes eld
+\end_inset
+
+replicator
+\begin_inset Quotes erd
+\end_inset
+
+ - a group of cells that that continually creates more and more copies of
+ itself.
+ Pictured below are a replicator, this replicator after 12 turns, and after
+ an additional 24 turns.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Replicator.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Replicator_gen12.png
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename C:/Users/Jotun/Desktop/Replicator_gen36.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Conway's Game of Life was and still is one of the most advanced and deep
+ programs ever to be created.
+ Its patterns have attracted the attention of and hypnotized thousands of
+ people, its variations are deepening the entire universe of cellular automata,
+ and more and more patterns and guns and the like are being discovered every
+ day.
+ As of the time of writing, 
+\begin_inset CommandInset href
+LatexCommand href
+name "LifeWiki"
+target "http://www.conwaylife.com/wiki/Main_Page"
+
+\end_inset
+
+has over 750 patterns intimately documented, and more are being discovered
+ every day.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "C:/Users/Jotun/Desktop/gameoflife"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
